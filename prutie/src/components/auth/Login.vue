@@ -9,7 +9,8 @@
 </template>
 
 <script>
-  import * as firebase from 'firebase'
+/* eslint-disable */
+  import firebaseApi from '../../api/firebase/firebase'
   import { mapActions } from 'vuex'
 
   export default {
@@ -24,11 +25,10 @@
 
         ...mapActions(['login']),
 
-        initiateLogin : ()=>{
-          console.log('initialize login');
-          this.$store.dispatch('login');
-  }
-
+        initiateLogin(){
+          firebaseApi.hello
+          this.login()
+        } 
     }
   }
 </script>

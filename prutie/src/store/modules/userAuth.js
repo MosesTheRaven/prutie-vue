@@ -16,11 +16,11 @@ const mutations = {
 
 const actions = {
   logout : ({ commit }) => {
-    commit('setToken', false)
+    commit('setAuthState', false)
   },
   login : ({ commit }) => {
     console.log('nejakym zazrakom som sa vykonal')
-    commit('setToken', true)
+    commit('setAuthState', true)
   }
 }
 
