@@ -1,12 +1,14 @@
 <template>
   <v-form>
     <v-text-field label="Meno"
-                  v-model="name" required />
+                  v-model="name" 
+                  required />
     <v-text-field label="Heslo"
-                  v-model="password" required />
+                  v-model="password" 
+                  type="password" 
+                  required />
     <v-btn @click.prevent="initiateLogin">Prihlasit</v-btn>
-    <p>nieco {{ isAttemptedTry }}</p>
-    <v-alert v-if="isAttemptedTry" :value="true" type="error">Chybne prihlasovacie udaje</v-alert>
+    <v-alert :value="error" type="error">{{ error }}</v-alert>
   </v-form>
 </template>
 
@@ -16,11 +18,14 @@
 
   export default {
     name: "Login",
-    computed : mapGetters(['isLoggedIn', 'isAttemptedTry']),
+    computed : {
+        ...mapGetters(['isLoggedIn']),
+    },
     data() {
       return {
         name : null,
-        password : null
+        password : null,
+        error : ""
       }
     },
     methods: {
@@ -28,7 +33,10 @@
         ...mapActions(['login']),
 
         initiateLogin(){
-          this.login({name : this.name, password : this.password})
+          if(this.name != "" && this.password != ""){
+            this.login({email : this.name+"@abc.efg", password : this.password})
+          }
+          else this.error = "Chybne zadane prihlasovacie udaje"
         } 
     }
   }

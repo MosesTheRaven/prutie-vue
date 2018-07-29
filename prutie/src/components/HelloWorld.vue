@@ -4,8 +4,10 @@
       <v-layout column align-center>
         <img src="@/assets/logo.png" alt="Vuetify.js" class="mb-5">
         <p>tu bude logo vrboveho prutia</p>
-        <h2 v-if="isLoggedIn"> {{ getUserData }}</h2>
-        <Login v-if="!isLoggedIn"></Login>
+        <h2 v-if="isLoggedIn">Vitaj, {{ getUserData.name }}!</h2>
+        <h2 v-else>Prihlaste sa prihlasovacimi udajmi</h2>
+        <Login v-if="!isLoggedIn" />
+        <Admin v-if="isLoggedIn"/>
       </v-layout>
     </v-slide-y-transition>
   </v-container>
@@ -13,15 +15,16 @@
 
 <script>
 import Login from "./auth/Login";
+import Admin from "./admin/Admin";
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'HelloWorld',
   computed : mapGetters(['isLoggedIn', 'getUserData']),
-  components: {Login},
-  props: {
-    msg: String
-  }
+  components: {
+    Login, 
+    Admin
+  },
 }
 </script>
 
@@ -40,5 +43,9 @@ li {
 }
 a {
   color: #42b983;
+}
+form {
+  margin-top: 10px;
+  margin-bottom: 10px
 }
 </style>
