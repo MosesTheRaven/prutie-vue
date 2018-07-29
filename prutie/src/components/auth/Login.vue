@@ -4,7 +4,7 @@
                   v-model="name" required />
     <v-text-field label="Heslo"
                   v-model="password" required />
-    <v-btn @click.prevent="login">Prihlasit</v-btn>
+    <v-btn @click.prevent="initiateLogin">Prihlasit</v-btn>
   </v-form>
 </template>
 
@@ -24,6 +24,10 @@
 
         ...mapActions(['login']),
 
+        initiateLogin : ()=>{
+          console.log('initialize login');
+          this.$store.dispatch('login');
+  }
 
     }
   }
