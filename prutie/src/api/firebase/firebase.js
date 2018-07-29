@@ -1,20 +1,15 @@
+
 import * as firebase from 'firebase'
+import { mapMutations } from 'vuex'
 
 export default{
-    userData : null,
 
-    hello() {
-        console.log('hehe')
-    }, 
+    users : {},
 
-    login(name, password){
-        firebase.database().ref('users/')
-        .on('child_added', (userDataSnapshot)=>{
-            if(name == userDataSnapshot.key && password == userDataSnapshot.val()) this.userData.name = userDataSnapshot.key;
-        })
-        .then(()=>{
-            if(this.userData) return true;
-            return false;
-        })
+    methods : mapMutations(['setUserData', 'setAuthState']),
+
+    login(loginData){
+        console.log('firebase login')
+        
     }
 }

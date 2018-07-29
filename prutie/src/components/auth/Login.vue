@@ -5,16 +5,18 @@
     <v-text-field label="Heslo"
                   v-model="password" required />
     <v-btn @click.prevent="initiateLogin">Prihlasit</v-btn>
+    <p>nieco {{ isAttemptedTry }}</p>
+    <v-alert v-if="isAttemptedTry" :value="true" type="error">Chybne prihlasovacie udaje</v-alert>
   </v-form>
 </template>
 
 <script>
-/* eslint-disable */
-  import firebaseApi from '../../api/firebase/firebase'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
+
 
   export default {
     name: "Login",
+    computed : mapGetters(['isLoggedIn', 'isAttemptedTry']),
     data() {
       return {
         name : null,
@@ -26,8 +28,7 @@
         ...mapActions(['login']),
 
         initiateLogin(){
-          firebaseApi.hello
-          this.login()
+          this.login({name : this.name, password : this.password})
         } 
     }
   }
