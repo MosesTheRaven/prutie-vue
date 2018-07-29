@@ -3,41 +3,36 @@
     <v-text-field label="Meno"
                   v-model="name" 
                   required />
-                  <p>{{ name }}</p>
     <v-text-field label="Heslo"
                   v-model="password" 
                   type="password" 
                   required />
     <v-btn @click.prevent="initiateLogin">Prihlasit</v-btn>
-    <v-alert :value="error" type="error">{{ error }}</v-alert>
+    <v-alert :value="getCrashReport" type="error">{{ getCrashReport }}</v-alert>
   </v-form>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
 
-
   export default {
     name: "Login",
     computed : {
-        ...mapGetters(['isLoggedIn']),
+        ...mapGetters(['isLoggedIn', 'getCrashReport']),
     },
     data() {
       return {
         name : null,
         password : null,
-        error : ""
       }
     },
     methods: {
-
         ...mapActions(['login']),
-
+        
         initiateLogin(){
           if(this.name != "" && this.password != ""){
             this.login({email : this.name+"@abc.efg", password : this.password})
           }
-          else this.error = "Chybne zadane prihlasovacie udaje"
         } 
     }
   }

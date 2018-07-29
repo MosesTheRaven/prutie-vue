@@ -8,7 +8,7 @@
                     v-model="password" 
                     type="password" 
                     required />
-        <v-btn @click.prevent="addUser">Vytvorit uzivatela</v-btn>
+        <v-btn @click.prevent="addUserToFirebase">Vytvorit uzivatela</v-btn>
         <v-alert :value="error" type="error">{{ error }}</v-alert>
         <v-alert :value="success" type="success"> {{success}}</v-alert>
   </v-form>
@@ -16,6 +16,8 @@
 
 <script>
 import * as firebase from 'firebase'
+import FirebaseAPI from '../../api/firebase/firebase'
+
 import { mapActions } from 'vuex'
 
 export default {
@@ -29,29 +31,17 @@ export default {
         }
     },
     methods: {
-        //funkcia na pridavanie uzivatelov do firebase
-        addUser(){
+        addUserToFirebase(){
+            //tu by mali byt este kontroly spravnosti textu
             var email = this.name + "@abc.efg"
-            console.log(email, this.password)
-            //vytvorenie uzivatela v auth firebase
-            firebase.auth().createUserWithEmailAndPassword(email, this.password)
-            .then((data)=>{
-                //pridanie uzivatela do db firebase
-                firebase.database().ref('users/' + data.user.uid).set(
-                {
-                    uid : data.user.uid,
-                    name : this.name,
-                })
-                //oboznamenie uzivatela o vysledku pridavania uzivatela1
-                .then(()=>{
-                    this.success = "Uzivatel bol uspesne pridany!"
-                    this.error = ""
-                })
-            })
-            .catch((error)=>{
-                this.success = ""
-                this.error = "Pri pridavani uzivatela doslo k chybe!"
-                console.log(error, error.message)
+            FirebaseAPI.createUser({
+                email : email, 
+                name : this.name, 
+                password : this.password
+            },
+            (message)=>{
+                if(message.type == "success") { this.success = message.message; this.error = "" }
+                else { this.error = message.message; this.success = "" } 
             })
         }
     }

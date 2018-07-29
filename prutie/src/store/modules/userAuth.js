@@ -1,10 +1,11 @@
 
 import * as firebase from 'firebase'
-import {LOGIN as firebaseAPI} from '../../api/firebase/firebase'
+import FirebaseAPI from '../../api/firebase/firebase'
 
 const state = {
   authState : false,
   userData : {},
+  crashReport : ""
 
 }
 
@@ -15,6 +16,9 @@ const getters = {
   getUserData : (state) =>{
     return state.userData
   },
+  getCrashReport : (state) =>{
+    return state.crashReport
+  }
 }
 
 const mutations = {
@@ -24,6 +28,9 @@ const mutations = {
   setUserData : (state, newUserData) => {
     state.userData = newUserData
   },
+  setCrashReport : (state, newCrashReport) => {
+    state.crashReport = newCrashReport
+  }
 }
 
 const actions = {
@@ -34,9 +41,15 @@ const actions = {
     commit('setAuthState', false)
   },
   login : ({ commit }, loginData) => {
-    firebaseAPI(loginData.email, loginData.password, (userData)=>{
-      commit('setUserData', userData)
-      commit('setAuthState', true)
+    FirebaseAPI.login(loginData.email, loginData.password, (userData)=>{
+      if(userData.type == "success"){
+        commit('setUserData', userData.data)
+        commit('setAuthState', true)
+      }
+      else {
+        commit('setCrashReport', userData.data)
+        console.log(userData.error)
+      }
     })
   }
 }
