@@ -1,5 +1,6 @@
 
 import * as firebase from 'firebase'
+import {LOGIN as firebaseAPI} from '../../api/firebase/firebase'
 
 const state = {
   authState : false,
@@ -33,16 +34,9 @@ const actions = {
     commit('setAuthState', false)
   },
   login : ({ commit }, loginData) => {
-    //prihlasenie do firebase
-    firebase.auth().signInWithEmailAndPassword(loginData.email, loginData.password)
-    .then((signInUserData)=>{
-      //vytiahnutie potrebnych dat o prihlasenom uzivatelovi
-      firebase.database().ref('users/' + signInUserData.user.uid)
-      .once('value', (userDataSnapshot)=>{
-        //update userData po uspesnom prihlaseni
-        commit('setUserData', userDataSnapshot.val())
-        commit('setAuthState', true)
-      })
+    firebaseAPI(loginData.email, loginData.password, (userData)=>{
+      commit('setUserData', userData)
+      commit('setAuthState', true)
     })
   }
 }

@@ -3,6 +3,7 @@
     <v-text-field label="Meno"
                   v-model="name" 
                   required />
+                  <p>{{ name }}</p>
     <v-text-field label="Heslo"
                   v-model="password" 
                   type="password" 
